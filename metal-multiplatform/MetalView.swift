@@ -12,6 +12,8 @@ struct MetalView {
     
     @State private var renderer: MetalRenderer = MetalRenderer()
     
+    @Binding var rotation: Float // thing need to be sent as parameter
+    
     private func makeMetalView() -> MTKView {
         let view = MTKView()
         view.clearColor = MTLClearColor(red: 0.05, green: 0.518, blue: 1, alpha: 1)
@@ -20,6 +22,10 @@ struct MetalView {
         view.delegate = renderer
         
         return view
+    }
+    
+    private func updateMetalView() {
+        renderer.updateRotation(angle: rotation)
     }
 }
 #if os(iOS)
@@ -30,6 +36,7 @@ extension MetalView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIViewType, context: Context) {
+        updateMetalView()
     }
 }
 #elseif os(macOS)
@@ -39,6 +46,7 @@ extension MetalView: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
+        updateMetalView()
     }
 }
 #endif
