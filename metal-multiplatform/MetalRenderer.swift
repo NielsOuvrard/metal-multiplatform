@@ -82,8 +82,9 @@ class MetalRenderer: NSObject, MTKViewDelegate, Texturable {
     
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
     }
-    
+
     func draw(in view: MTKView) {
+        let currentTime = CACurrentMediaTime()
         if let drawable = view.currentDrawable,
            let renderPassDescriptor = view.currentRenderPassDescriptor {
             
@@ -91,6 +92,9 @@ class MetalRenderer: NSObject, MTKViewDelegate, Texturable {
                   let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor) else {
                 fatalError("Could not set up objects for render encoding")
             }
+            
+            let animatedBy = abs(sin(currentTime) / 2 + 0.5)
+            rotationMatrix = float4x4(rotationZ: Float(animatedBy * .pi))
             
             renderEncoder.setRenderPipelineState(pipelineState)
             renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
