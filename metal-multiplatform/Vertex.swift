@@ -8,8 +8,9 @@
 import MetalKit
 
 struct Vertex {
-    let position2d: SIMD2<Float>
-    let colorRgb: SIMD3<Float>
+    let position2d: SIMD2<Float> // float3
+    let colorRgb: SIMD3<Float> // float4
+    let texture: SIMD2<Float> // float2
     
     static func buildDefaultVertexDescriptor() -> MTLVertexDescriptor {
         let vertexDescriptor = MTLVertexDescriptor()
@@ -21,6 +22,10 @@ struct Vertex {
         vertexDescriptor.attributes[1].format = .float3
         vertexDescriptor.attributes[1].bufferIndex = 0
         vertexDescriptor.attributes[1].offset = MemoryLayout<Vertex>.offset(of: \.colorRgb)!
+        
+        vertexDescriptor.attributes[2].format = .float2
+        vertexDescriptor.attributes[2].bufferIndex = 0
+        vertexDescriptor.attributes[2].offset = MemoryLayout<Vertex>.offset(of: \.texture)!
         
         vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.stride
         
